@@ -12,3 +12,18 @@ exports.createToken = function (user) {
   console.log(payload);
   return jwt.encode(payload, config.TOKEN_SECRET);
 };
+/**
+ * Genera error si no es valido el token. Si es válido devuelve el id del usuario
+ */
+
+exports.comprobarToken = function(req, res){
+  console.log("User: "+req.header('auth-token'));
+  var token=req.header('auth-token');
+  var payload = jwt.decode(token, config.TOKEN_SECRET);
+
+  if (payload.exp <= moment().unix()) {
+    return res.status(401).send({ message: "El token ha expirado" });
+  }
+
+  return payload.sub;
+};

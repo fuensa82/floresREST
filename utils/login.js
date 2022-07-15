@@ -4,7 +4,6 @@ var token = require("./token");
 var DatosLogin = require("../modelos/datosLogin");
 
 
-
 exports.LOGIN = function (req, res) {
   console.log("Login: "+req.query.user);
   var usuario=req.query.user;
@@ -22,18 +21,11 @@ exports.LOGIN = function (req, res) {
 };
 exports.COMPROBAR = function (req, res,next) {
   console.log("Comprobando token de autenticacion");
-  if(!comprobarToken(req, res)){
+  if(!token.comprobarToken(req, res)){
     return res.status(401).send({ message: "El token ha expirado" });
   }else{
     next();
   }
 };
 
-function comprobarToken(req, res){
-  console.log("User: "+req.headers);
-  if(req.query.user=="Victor"){
-    return true;
-  }else{
-    return false;
-  }
-}
+
